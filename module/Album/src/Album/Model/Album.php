@@ -85,7 +85,5 @@ class Album implements InputFilterAwareInterface
 	public function getArrayCopy()
 	{
 		return get_object_vars($this);
-	}
-	
-	
+	}	
 }
