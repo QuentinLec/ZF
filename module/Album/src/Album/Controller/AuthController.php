@@ -7,6 +7,8 @@ use Zend\Form\Element;
 use Zend\Form\Form;
 use Zend\InputFilter\Input;
 use Zend\InputFilter\InputFilter;
+use Zend\Authentication\AuthenticationService;
+use Album\Utility\AuthAdapter;
 
 class AuthController extends AbstractActionController {
 	
@@ -20,14 +22,17 @@ class AuthController extends AbstractActionController {
 			
 			if ($form->isValid()) {
 				// Code correspondant à l'authentification
+				$serviceManager = $this->getServiceLocator();
+				$auth = $serviceManager->get('AlbumAuth');
+				$auth->setAdapter(new AuthAdapter($form->get('login')->getValue(), $form->get('password')->getValue()));
+				$r = $auth->authenticate();
 				
-				if ( (strcmp( $form->get('login')->getValue(), 'quentin@insset.fr') == 0) &&
-							(strcmp( $form->get('password')->getValue(), 'blob') == 0) ) {
-					return $this->redirect()->toRoute('album');
-				} else { // Mauvais log/pass
-					$this->flashMessenger()->addErrorMessage('Erreur d\'identification');
+				if ($r->isValid()) {
+  				return $this->redirect()->toRoute('album');
+ 				} else { // Mauvais log/pass
+ 					$this->flashMessenger()->addErrorMessage('Erreur d\'identification');
 					return array('formAuth'=>$form);
-				}
+ 				}
 			} else { // Mauvaise saisie
 				return array('formAuth'=>$form);
 			}
