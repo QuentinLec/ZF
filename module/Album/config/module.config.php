@@ -3,8 +3,8 @@
 return array(
      'controllers' => array(
          'invokables' => array(
-             'Album\Controller\Album' => 'Album\Controller\AlbumController',
-         ),
+            'Album\Controller\Album' => 'Album\Controller\AlbumController',
+         		'Album\Controller\Auth' => 'Album\Controller\AuthController',         ),
      ),
 
      // The following section is new and should be added to your file
@@ -24,6 +24,19 @@ return array(
                      ),
                  ),
              ),
+         		'auth' => array(
+         				'type'    => 'segment',
+         				'options' => array(
+         						'route'    => '/auth[/][:action]',
+         						'constraints' => array(
+         								'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+         						),
+         						'defaults' => array(
+         								'controller' => 'Album\Controller\Auth',
+         								'action'     => 'index',
+         						),
+         				),
+         		),
          ),
      ),
 

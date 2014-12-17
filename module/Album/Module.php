@@ -36,6 +36,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 		return array(
 				'factories' => array(
 						'Album\Model\AlbumTable' =>  function($sm) {
+							echo 'o';
 							$tableGateway = $sm->get('AlbumTableGateway');
 							$table = new AlbumTable($tableGateway);
 							return $table;
