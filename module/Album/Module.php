@@ -11,9 +11,28 @@ use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Storage\Session;
+use Album\Utility\AclService;
+use Zend\ModuleManager\ModuleManager;
+use Zend\ModuleManager\ModuleEvent;
+use Zend\Mvc\MvcEvent;
 
-class Module implements AutoloaderProviderInterface, ConfigProviderInterface
-{
+class Module implements AutoloaderProviderInterface, ConfigProviderInterface {
+
+// 	public function init(ModuleManager $mm) {
+// 		$eventManager = $mm->getEventManager();
+// 		$eventManager->attach('loadModules.post', array($this, 'postInit'), -1000);
+// 	}
+	
+// 	public function postInit(ModuleEvent $e) {
+// 		var_dump($e);
+// 		exit;
+// 	}
+	
+// 	public function onBootstrap(MvcEvent $mvcEvent) {
+// 		$eventManager = $mvcEvent->getApplication()->getEventManager();
+// 		$eventManager->attach(MvcEvent::EVENT_ROUTE);
+// 	}
+	
 	public function getAutoloaderConfig()
 	{
 		return array(
@@ -52,6 +71,10 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 							$auth = new AuthenticationService();
 							$auth->setStorage(new Session());
 							return $auth;
+						},
+						'AclService' => function ($sm) {
+							$acl = new AclService();
+							return $acl;
 						},
 				),
 		);

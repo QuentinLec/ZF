@@ -13,7 +13,6 @@ class AlbumController extends AbstractActionController
 {
 	protected $albumTable;
 	
-	
 	public function indexAction()
 	{
 		return new ViewModel(array(
@@ -23,9 +22,26 @@ class AlbumController extends AbstractActionController
 
 	public function addAction()
   {  	 	
-  	if (!$this->initAuth()->hasIdentity()) {
-  		return $this->redirect()->toRoute('auth');
+  	// Code correspondant à l'authentification
+  	$serviceManager = $this->getServiceLocator();
+  	$auth = $serviceManager->get('AlbumAuth');
+  	
+  	if ($auth->hasIdentity()) {
+  		$identity = $auth->getIdentity();
+  		$role = $identity['role'];
   	} else {
+  		return $this->redirect()->toRoute('auth', array(
+  				'action' => 'index'
+  		));
+  	}
+  	
+  	$acl = $serviceManager->get('AclService');
+  	$ressource = __METHOD__;
+  	if (!$acl->isAllowed($role, $ressource)) {
+  		return $this->redirect()->toRoute('album', array(
+  				'action' => 'index'//'noPrivilege'
+  		));
+  	}
   		
   		$form = new AlbumForm();
   		$form->get('submit')->setValue('Add');
@@ -46,15 +62,30 @@ class AlbumController extends AbstractActionController
   		}
   		
   		return array('form' => $form);
-  	}
   }
-	
 
 	public function editAction()
   {
-  	if (!$this->initAuth()->hasIdentity()) {
-  		return $this->redirect()->toRoute('auth');
+  	// Code correspondant à l'authentification
+  	$serviceManager = $this->getServiceLocator();
+  	$auth = $serviceManager->get('AlbumAuth');
+  	
+  	if ($auth->hasIdentity()) {
+  		$identity = $auth->getIdentity();
+  		$role = $identity['role'];
   	} else {
+  		return $this->redirect()->toRoute('auth', array(
+  				'action' => 'index'
+  		));
+  	}
+  	
+  	$acl = $serviceManager->get('AclService');
+  	$ressource = __METHOD__;
+  	if (!$acl->isAllowed($role, $ressource)) {
+  		return $this->redirect()->toRoute('album', array(
+  				'action' => 'index'//'noPrivilege'
+  		));
+  	}
   		
   		$id = (int) $this->params()->fromRoute('id', 0);
 	    if (!$id) {
@@ -95,14 +126,30 @@ class AlbumController extends AbstractActionController
 	    	'id' => $id,
 	      'form' => $form,
 	     	);
-  	}
   }
 
 	public function deleteAction()
   {
-  	if (!$this->initAuth()->hasIdentity()) {
-  		return $this->redirect()->toRoute('auth');
+  	// Code correspondant à l'authentification
+  	$serviceManager = $this->getServiceLocator();
+  	$auth = $serviceManager->get('AlbumAuth');
+  	
+  	if ($auth->hasIdentity()) {
+  		$identity = $auth->getIdentity();
+  		$role = $identity['role'];
   	} else {
+  		return $this->redirect()->toRoute('auth', array(
+  				'action' => 'index'
+  		));
+  	}
+  	
+  	$acl = $serviceManager->get('AclService');
+  	$ressource = __METHOD__;
+  	if (!$acl->isAllowed($role, $ressource)) {
+  		return $this->redirect()->toRoute('album', array(
+  				'action' => 'index'//noPrivilege'
+  		));
+  	}
   		
   		$id = (int) $this->params()->fromRoute('id', 0);
 	    if (!$id) {
@@ -126,9 +173,24 @@ class AlbumController extends AbstractActionController
 	      'id'    => $id,
 	      'album' => $this->getAlbumTable()->getAlbum($id)
 	    );
+  }
+  
+  public function viewAction () {
+  	$id = (int) $this->params()->fromRoute('id', 0);
+  	if (!$id) {
+  		return $this->redirect()->toRoute('album');
   	}
+  	
+  	return array(
+  			'id'    => $id,
+  			'album' => $this->getAlbumTable()->getAlbum($id)
+  	);
   }
 	
+  public function noPrivilegeAction() {
+  	return array ();
+  }
+  
 	public function getAlbumTable()
 	{
 		if (!$this->albumTable) {
@@ -136,14 +198,5 @@ class AlbumController extends AbstractActionController
 			$this->albumTable = $sm->get('Album\Model\AlbumTable');
 		}
 		return $this->albumTable;
-	}
-	
-	private function initAuth() {
-		
-		// Code correspondant à l'authentification
-		$serviceManager = $this->getServiceLocator();
-		$auth = $serviceManager->get('AlbumAuth');
-		
- 		return $auth;
 	}
 }

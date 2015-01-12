@@ -32,10 +32,32 @@ class AuthAdapter implements AdapterInterface
 	public function authenticate()
 	{
 		// Test de l'authentification
-		if ( (strcmp($this->log, 'quentin@insset.fr') == 0) &&
+		if ( (strcmp($this->log, 'visiteur@insset.fr') == 0) &&
 					(strcmp($this->pass, 'blob') == 0) ) {
 			// Elle a réussi
-			$result = new Result(Result::SUCCESS, $this->log);
+			$result = new Result(Result::SUCCESS, array(
+					'login' => $this->log,
+					'role' => 'VISITEUR'
+				)
+			);
+		}
+		elseif ( (strcmp($this->log, 'fans@insset.fr') == 0) &&
+					(strcmp($this->pass, 'blob') == 0) ) {
+			// Elle a réussi
+			$result = new Result(Result::SUCCESS, array(
+					'login' => $this->log,
+					'role' => 'FANS'
+				)
+			);
+		}
+		elseif ( (strcmp($this->log, 'admin@insset.fr') == 0) &&
+					(strcmp($this->pass, 'blob') == 0) ) {
+			// Elle a réussi
+			$result = new Result(Result::SUCCESS, array(
+					'login' => $this->log,
+					'role' => 'ADMIN'
+				)
+			);
 		} else {
 			$result = new Result(Result::FAILURE, $this->log);
 		}
