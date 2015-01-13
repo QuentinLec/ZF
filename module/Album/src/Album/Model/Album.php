@@ -11,6 +11,7 @@ class Album implements InputFilterAwareInterface
 	public $id;
 	public $artist;
 	public $title;
+	public $description;
 	protected $inputFilter;
 
 	public function exchangeArray($data)
@@ -18,6 +19,7 @@ class Album implements InputFilterAwareInterface
 		$this->id     = (!empty($data['id'])) ? $data['id'] : null;
 		$this->artist = (!empty($data['artist'])) ? $data['artist'] : null;
 		$this->title  = (!empty($data['title'])) ? $data['title'] : null;
+		$this->description  = (!empty($data['description'])) ? $data['description'] : null;
 	}
 	
 	public function setInputFilter(InputFilterInterface $inputFilter)
@@ -71,6 +73,25 @@ class Album implements InputFilterAwareInterface
 											'encoding' => 'UTF-8',
 											'min'      => 1,
 											'max'      => 100,
+									),
+							),
+					),
+			));
+			
+			$inputFilter->add(array(
+					'name'     => 'description',
+					'required' => false,
+					'filters'  => array(
+							array('name' => 'StripTags'),
+							array('name' => 'StringTrim'),
+					),
+					'validators' => array(
+							array(
+									'name'    => 'StringLength',
+									'options' => array(
+											'encoding' => 'UTF-8',
+											'min'      => 1,
+											'max'      => 200,
 									),
 							),
 					),

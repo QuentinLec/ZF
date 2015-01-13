@@ -69,11 +69,6 @@ class AuthController extends AbstractActionController {
 		$form = new Form('identification');
 		$form->add($login);
 		$form->add($password);
-		
-// 		$inputLogin = new Input('login');
-// 		$inputLogin->setRequired(true);
-// 		$inputLogin->getValidatorChain()->attachByName('alpha');
-// 		$inputLogin->getFilterChain()->attachByName('alpha');
 
 		$inputFilter = new InputFilter();
 		
@@ -84,9 +79,6 @@ class AuthController extends AbstractActionController {
 				'validators' => array( array(
 						'name' => 'emailaddress')
 				),
-// 				'filters' => array(
-// 						array('name' => 'digits')					
-// 				)
 			)
 		);
 		

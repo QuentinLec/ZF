@@ -83,7 +83,7 @@ class AlbumController extends AbstractActionController
   	$ressource = __METHOD__;
   	if (!$acl->isAllowed($role, $ressource)) {
   		return $this->redirect()->toRoute('album', array(
-  				'action' => 'index'//'noPrivilege'
+  				'action' => 'index'
   		));
   	}
   		
@@ -175,7 +175,7 @@ class AlbumController extends AbstractActionController
 	    );
   }
   
-  public function viewAction () {
+  public function infosAction () {
   	$id = (int) $this->params()->fromRoute('id', 0);
   	if (!$id) {
   		return $this->redirect()->toRoute('album');
@@ -189,6 +189,70 @@ class AlbumController extends AbstractActionController
 	
   public function noPrivilegeAction() {
   	return array ();
+  }
+  
+  public function descriptionAction()
+  {
+//   	// Code correspondant à l'authentification
+//   	$serviceManager = $this->getServiceLocator();
+//   	$auth = $serviceManager->get('AlbumAuth');
+  	 
+//   	if ($auth->hasIdentity()) {
+//   		$identity = $auth->getIdentity();
+//   		$role = $identity['role'];
+//   	} else {
+//   		return $this->redirect()->toRoute('auth', array(
+//   				'action' => 'index'
+//   		));
+//   	}
+  	 
+//   	$acl = $serviceManager->get('AclService');
+//   	$ressource = __METHOD__;
+//   	if (!$acl->isAllowed($role, $ressource)) {
+//   		return $this->redirect()->toRoute('album', array(
+//   				'action' => 'index'//'noPrivilege'
+//   		));
+//   	}
+  
+  	$id = (int) $this->params()->fromRoute('id', 0);
+  	if (!$id) {
+  		return $this->redirect()->toRoute('album', array(
+  				'action' => 'add'
+  		));
+  	}
+  
+  	// Get the Album with the specified id.  An exception is thrown
+  	// if it cannot be found, in which case go to the index page.
+  	try {
+  		$album = $this->getAlbumTable()->getAlbum($id);
+  	}
+  	catch (\Exception $ex) {
+  		return $this->redirect()->toRoute('album', array(
+  				'action' => 'index'
+  		));
+  	}
+  
+  	$form  = new AlbumForm();
+  	$form->bind($album);
+  	$form->get('submit')->setAttribute('value', 'Add');
+  
+  	$request = $this->getRequest();
+  	if ($request->isPost()) {
+  		$form->setInputFilter($album->getInputFilter());
+  		$form->setData($request->getPost());
+  
+  		if ($form->isValid()) {
+  			$this->getAlbumTable()->saveAlbum($album);
+  
+  			// Redirect to list of albums
+  			return $this->redirect()->toRoute('album');
+  		}
+  	}
+  
+  	return array(
+  			'id' => $id,
+  			'form' => $form,
+  	);
   }
   
 	public function getAlbumTable()
