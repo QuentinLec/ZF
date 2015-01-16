@@ -13,6 +13,10 @@ class AlbumController extends AbstractActionController
 {
 	protected $albumTable;
 	
+	public function aclTest() {
+		print ("Merde");
+	}
+	
 	public function indexAction()
 	{
 		return new ViewModel(array(
@@ -191,7 +195,7 @@ class AlbumController extends AbstractActionController
   	return array ();
   }
   
-  public function descriptionAction()
+  public function descriptionaddAction()
   {
 //   	// Code correspondant à l'authentification
 //   	$serviceManager = $this->getServiceLocator();
