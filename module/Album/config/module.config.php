@@ -8,37 +8,37 @@ return array(
      ),
 
      // The following section is new and should be added to your file
-     'router' => array(
-         'routes' => array(
-             'album' => array(
-                 'type'    => 'segment',
-                 'options' => array(
-                     'route'    => '/album[/][:action][/:id]',
-                     'constraints' => array(
-                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                         'id'     => '[0-9]+',
-                     ),
-                     'defaults' => array(
-                         'controller' => 'Album\Controller\Album',
-                         'action'     => 'index',
-                     ),
-                 ),
-             ),
-         		'auth' => array(
-         				'type'    => 'segment',
-         				'options' => array(
-         						'route'    => '/auth[/][:action]',
-         						'constraints' => array(
-         								'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-         						),
-         						'defaults' => array(
-         								'controller' => 'Album\Controller\Auth',
-         								'action'     => 'index',
-         						),
-         				),
-         		),
-         ),
-     ),
+		'router' => array(
+				'routes' => array(
+						'album' => array(
+								'type'    => 'segment',
+								'options' => array(
+										'route'    => '/album[/:action][/:id]',
+										'constraints' => array(
+												'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+												'id'     => '[0-9]+',
+										),
+										'defaults' => array(
+												'controller' => 'Album\Controller\Album',
+												'action'     => 'index',
+										),
+								),
+						),
+						'auth' => array(
+								'type'    => 'segment',
+								'options' => array(
+										'route'    => '/auth[/][:action]',
+										'constraints' => array(
+												'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+										),
+										'defaults' => array(
+												'controller' => 'Album\Controller\Auth',
+												'action'     => 'index',
+										),
+								),
+						),
+				),
+		),
 
      'view_manager' => array(
          'template_path_stack' => array(
