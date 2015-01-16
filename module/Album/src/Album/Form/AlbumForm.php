@@ -32,6 +32,9 @@ class AlbumForm extends Form
 		$this->add(array(
 				'name' => 'description',
 				'type' => 'Text',
+				'options' => array(
+						'label' => '',
+				),
 		));
 		$this->add(array(
 				'name' => 'submit',

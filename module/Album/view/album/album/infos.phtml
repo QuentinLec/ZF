@@ -6,8 +6,9 @@
 
 <h1><?php echo $this->escapeHtml($album->title); ?> by <?php echo $this->escapeHtml($album->artist); ?></h1>
 <br>
+<h3>Description :</h3>
 <?php echo $this->escapeHtml($album->description); ?>
-<br>
-<a href="<?php echo $this->url('album', array('action'=>'description', 'id' => $album->id));?>">
-	Add Description
+<br><br>
+<a href="<?php echo $this->url('album', array('action'=>'descriptionadd', 'id' => $album->id));?>">
+	Add
 </a>

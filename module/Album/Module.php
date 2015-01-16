@@ -29,6 +29,8 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface {
 // 	}
 	
 // 	public function onBootstrap(MvcEvent $mvcEvent) {
+// 		$aclTest = new AlbumController();
+		
 // 		$eventManager = $mvcEvent->getApplication()->getEventManager();
 // 		$eventManager->attach(MvcEvent::EVENT_ROUTE);
 // 	}
