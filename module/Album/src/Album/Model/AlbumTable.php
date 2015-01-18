@@ -29,6 +29,17 @@ class AlbumTable
 		}
 		return $row;
 	}
+	
+	public function getAlbumTitle($title)
+	{
+		$title  = (String) $title;
+		$rowset = $this->tableGateway->select(array('title' => $title));
+		$row = $rowset->current();
+		if (!$row) {
+			throw new \Exception("Could not find row $title");
+		}
+		return $row;
+	}
 
 	public function saveAlbum(Album $album)
 	{
@@ -53,5 +64,10 @@ class AlbumTable
 	public function deleteAlbum($id)
 	{
 		$this->tableGateway->delete(array('id' => (int) $id));
+	}
+	
+	public function deleteAlbumTitle($title)
+	{
+		$this->tableGateway->delete(array('title' => (String) $title));
 	}
 }

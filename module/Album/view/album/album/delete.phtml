@@ -12,12 +12,12 @@
  <?php
  $url = $this->url('album', array(
      'action' => 'delete',
-     'id'     => $this->id,
+     'title'     => $this->title,
  ));
  ?>
  <form action="<?php echo $url; ?>" method="post">
  <div>
-     <input type="hidden" name="id" value="<?php echo (int) $album->id; ?>" />
+     <input type="hidden" name="title" value="<?php echo (String) $album->title; ?>" />
      <input type="submit" name="del" value="Yes" />
      <input type="submit" name="del" value="No" />
  </div>

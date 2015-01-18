@@ -22,27 +22,31 @@ class AclService extends Acl{
 		// Ajout des ressources
 		$this->addResource(new GenericResource('Album\Controller\AlbumController::addAction'))
 					->addResource(new GenericResource('Album\Controller\AlbumController::editAction'))
-					->addResource(new GenericResource('Album\Controller\AlbumController::deleteAction'));
+					->addResource(new GenericResource('Album\Controller\AlbumController::deleteAction'))
+					->addResource(new GenericResource('Album\Controller\AlbumController::descriptionAction'));
 
 		
 		// Refus des ressources à tous
 		$this->deny('ALL', array(
 				'Album\Controller\AlbumController::addAction',
 				'Album\Controller\AlbumController::editAction',
-				'Album\Controller\AlbumController::deleteAction'
+				'Album\Controller\AlbumController::deleteAction',
+				'Album\Controller\AlbumController::descriptionAction'
 			)
 		);
 		
 		// Les permissions
 		$this->allow('FANS', array(
 				'Album\Controller\AlbumController::addAction',
-				'Album\Controller\AlbumController::editAction'
+				'Album\Controller\AlbumController::editAction',
+				'Album\Controller\AlbumController::descriptionAction'
 			)
 		);
 		$this->allow('ADMIN', array(
 				'Album\Controller\AlbumController::addAction',
 				'Album\Controller\AlbumController::editAction',
-				'Album\Controller\AlbumController::deleteAction'
+				'Album\Controller\AlbumController::deleteAction',
+				'Album\Controller\AlbumController::descriptionAction'
 			)
 		);
 	}

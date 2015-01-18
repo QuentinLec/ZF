@@ -13,10 +13,10 @@ return array(
 						'album' => array(
 								'type'    => 'segment',
 								'options' => array(
-										'route'    => '/album[/:action][/:id]',
+										'route'    => '/album[/][:action][/:title]',
 										'constraints' => array(
 												'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-												'id'     => '[0-9]+',
+												'title'     => '[a-zA-Z0-9][a-zA-Z0-9_-]*',
 										),
 										'defaults' => array(
 												'controller' => 'Album\Controller\Album',

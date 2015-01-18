@@ -4,11 +4,11 @@
   $this->headTitle($title);
 ?>
 
-<h1><?php echo $this->escapeHtml($album->title); ?> by <?php echo $this->escapeHtml($album->artist); ?></h1>
+<h1><i><?php echo $this->escapeHtml($album->title); ?></i> by <i><?php echo $this->escapeHtml($album->artist); ?></i></h1>
 <br>
 <h3>Description :</h3>
 <?php echo $this->escapeHtml($album->description); ?>
 <br><br>
-<a href="<?php echo $this->url('album', array('action'=>'descriptionadd', 'id' => $album->id));?>">
-	Add
+<a href="<?php echo $this->url('album', array('action'=>'description', 'title' => str_replace (' ', '_', $album->title)));?>">
+	Add/Modify
 </a>

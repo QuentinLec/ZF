@@ -13,10 +13,6 @@ class AlbumController extends AbstractActionController
 {
 	protected $albumTable;
 	
-	public function aclTest() {
-		print ("Merde");
-	}
-	
 	public function indexAction()
 	{
 		return new ViewModel(array(
@@ -43,7 +39,7 @@ class AlbumController extends AbstractActionController
   	$ressource = __METHOD__;
   	if (!$acl->isAllowed($role, $ressource)) {
   		return $this->redirect()->toRoute('album', array(
-  				'action' => 'index'//'noPrivilege'
+  				'action' => 'index'
   		));
   	}
   		
@@ -91,17 +87,18 @@ class AlbumController extends AbstractActionController
   		));
   	}
   		
-  		$id = (int) $this->params()->fromRoute('id', 0);
-	    if (!$id) {
-	      return $this->redirect()->toRoute('album', array(
-	    	  'action' => 'add'
-	      ));
+  		$title = (String) $this->params()->fromRoute('title', 0);
+	     
+	    $title = str_replace ( '_', ' ', $title);
+	     
+	    if (!$title) {
+	    	return $this->redirect()->toRoute('album');
 	    }
 	
 	    // Get the Album with the specified id.  An exception is thrown
 	    // if it cannot be found, in which case go to the index page.
 	    try {
-	      $album = $this->getAlbumTable()->getAlbum($id);
+	      $album = $this->getAlbumTable()->getAlbumTitle($title);
 	    }
 	    catch (\Exception $ex) {
 	      return $this->redirect()->toRoute('album', array(
@@ -127,7 +124,7 @@ class AlbumController extends AbstractActionController
 	    }
 	
 	    return array(
-	    	'id' => $id,
+	    	'title' => $title,
 	      'form' => $form,
 	     	);
   }
@@ -151,22 +148,25 @@ class AlbumController extends AbstractActionController
   	$ressource = __METHOD__;
   	if (!$acl->isAllowed($role, $ressource)) {
   		return $this->redirect()->toRoute('album', array(
-  				'action' => 'index'//noPrivilege'
+  				'action' => 'index'
   		));
   	}
   		
-  		$id = (int) $this->params()->fromRoute('id', 0);
-	    if (!$id) {
-	      return $this->redirect()->toRoute('album');
-	    }
+  	$title = (String) $this->params()->fromRoute('title', 0);
+  	
+  	$title = str_replace ( '_', ' ', $title);
+  	
+  	if (!$title) {
+  		return $this->redirect()->toRoute('album');
+  	}
 	
 	    $request = $this->getRequest();
 	    if ($request->isPost()) {
 	      $del = $request->getPost('del', 'No');
 	
 	    if ($del == 'Yes') {
-	      $id = (int) $request->getPost('id');
-	      $this->getAlbumTable()->deleteAlbum($id);
+	      $title = (String) $request->getPost('title');
+	      $this->getAlbumTable()->deleteAlbumTitle($title);
 	    }
 	
 	    // Redirect to list of albums
@@ -174,20 +174,34 @@ class AlbumController extends AbstractActionController
 	    }
 	
 	    return array(
-	      'id'    => $id,
-	      'album' => $this->getAlbumTable()->getAlbum($id)
+	      'title'    => $title,
+	      'album' => $this->getAlbumTable()->getAlbumTitle($title)
 	    );
   }
   
   public function infosAction () {
-  	$id = (int) $this->params()->fromRoute('id', 0);
-  	if (!$id) {
+  	$title = (String) $this->params()->fromRoute('title', 0);
+  	
+  	$title = str_replace ( '_', ' ', $title);
+  	
+  	if (!$title) {
   		return $this->redirect()->toRoute('album');
   	}
   	
+  	// Get the Album with the specified id.  An exception is thrown
+  	// if it cannot be found, in which case go to the index page.
+  	try {
+  		$album = $this->getAlbumTable()->getAlbumTitle($title);
+  	}
+  	catch (\Exception $ex) {
+  		return $this->redirect()->toRoute('album', array(
+  				'action' => 'index'
+  		));
+  	}
+
   	return array(
-  			'id'    => $id,
-  			'album' => $this->getAlbumTable()->getAlbum($id)
+  			'title'    => $title,
+  			'album' => $album
   	);
   }
 	
@@ -195,40 +209,41 @@ class AlbumController extends AbstractActionController
   	return array ();
   }
   
-  public function descriptionaddAction()
+  public function descriptionAction()
   {
-//   	// Code correspondant à l'authentification
-//   	$serviceManager = $this->getServiceLocator();
-//   	$auth = $serviceManager->get('AlbumAuth');
+  	// Code correspondant à l'authentification
+  	$serviceManager = $this->getServiceLocator();
+  	$auth = $serviceManager->get('AlbumAuth');
   	 
-//   	if ($auth->hasIdentity()) {
-//   		$identity = $auth->getIdentity();
-//   		$role = $identity['role'];
-//   	} else {
-//   		return $this->redirect()->toRoute('auth', array(
-//   				'action' => 'index'
-//   		));
-//   	}
-  	 
-//   	$acl = $serviceManager->get('AclService');
-//   	$ressource = __METHOD__;
-//   	if (!$acl->isAllowed($role, $ressource)) {
-//   		return $this->redirect()->toRoute('album', array(
-//   				'action' => 'index'//'noPrivilege'
-//   		));
-//   	}
-  
-  	$id = (int) $this->params()->fromRoute('id', 0);
-  	if (!$id) {
-  		return $this->redirect()->toRoute('album', array(
-  				'action' => 'add'
+  	if ($auth->hasIdentity()) {
+  		$identity = $auth->getIdentity();
+  		$role = $identity['role'];
+  	} else {
+  		return $this->redirect()->toRoute('auth', array(
+  				'action' => 'index'
   		));
+  	}
+  	 
+  	$acl = $serviceManager->get('AclService');
+  	$ressource = __METHOD__;
+  	if (!$acl->isAllowed($role, $ressource)) {
+  		return $this->redirect()->toRoute('album', array(
+  				'action' => 'index'
+  		));
+  	}
+  
+  	$title = (String) $this->params()->fromRoute('title', 0);
+  	
+  	$title = str_replace ( '_', ' ', $title);
+  	
+  	if (!$title) {
+  		return $this->redirect()->toRoute('album');
   	}
   
   	// Get the Album with the specified id.  An exception is thrown
   	// if it cannot be found, in which case go to the index page.
   	try {
-  		$album = $this->getAlbumTable()->getAlbum($id);
+  		$album = $this->getAlbumTable()->getAlbumTitle($title);
   	}
   	catch (\Exception $ex) {
   		return $this->redirect()->toRoute('album', array(
@@ -248,13 +263,18 @@ class AlbumController extends AbstractActionController
   		if ($form->isValid()) {
   			$this->getAlbumTable()->saveAlbum($album);
   
+  			$endTitle = str_replace ( ' ', '_', $title);
+  			
   			// Redirect to list of albums
-  			return $this->redirect()->toRoute('album');
+  			return $this->redirect()->toRoute('album', array(
+  				'action' => 'infos',
+  				'title' => $endTitle
+  			));
   		}
   	}
   
   	return array(
-  			'id' => $id,
+  			'title' => str_replace ( ' ', '_', $title),
   			'form' => $form,
   	);
   }
