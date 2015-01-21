@@ -1,14 +1,39 @@
 <?php
 
-	$title = $this->escapeHtml($album->title)." by ".$this->escapeHtml($album->artist);
+	$title = $this->escapeHtml($album->title)." ".$this->translate('by')." ".$this->escapeHtml($album->artist);
   $this->headTitle($title);
+  
+  $request = $this->getHelperPluginManager()->getServiceLocator()->get('request');
+  $router = $this->getHelperPluginManager()->getServiceLocator()->get('router');
+  $matches = $router->match($request);
+  
+  if(is_null($matches)){
+  	$route_name = 'album';
+  	$params = array('lang'=>'en');
+  } else {
+  	$route_name = $matches->getMatchedRouteName();
+  	$params = $matches->getParams();
+  }
+  
+  if(isset($params['lang'])) $lang = $params['lang'];
+  else $lang =  'en';
 ?>
 
-<h1><i><?php echo $this->escapeHtml($album->title); ?></i> by <i><?php echo $this->escapeHtml($album->artist); ?></i></h1>
+<html lang="<?php echo $lang; ?>">
+
+<h1><i><?php echo $this->escapeHtml($album->title); ?></i> <?php echo $this->translate('by'); ?> <i><?php echo $this->escapeHtml($album->artist); ?></i></h1>
 <br>
-<h3>Description :</h3>
+<h3><?php echo $this->translate('Description'); ?> :</h3>
 <?php echo $this->escapeHtml($album->description); ?>
 <br><br>
-<a href="<?php echo $this->url('album', array('action'=>'description', 'title' => str_replace (' ', '_', $album->title)));?>">
-	Add/Modify
+<a href="<?php echo $this->url('album', array('lang'=>$lang, 'action'=>'description', 'title' => str_replace (' ', '_', $album->title)));?>">
+	<?php echo $this->translate('Add/Modify'); ?>
 </a>
+<br>
+<h3><?php echo $this->translate('Images'); ?> :</h3>
+<form method="post" enctype="multipart/form-data" action="upload.php">
+<p>
+<input type="file" name="fichier" size="30">
+<input type="submit" name="upload" value="Uploader">
+</p>
+</form>

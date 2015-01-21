@@ -35,12 +35,12 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface {
 // 		$eventManager->attach(MvcEvent::EVENT_ROUTE);
 // 	}
 
-	public function onBootstrap(MvcEvent $e)
-	{
-		$translator = $e->getApplication()->getServiceManager()->get('translator');
-		$translator->setLocale(\Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']))
-			->setFallbackLocale('fr_FR');
-	}
+// 	public function onBootstrap(MvcEvent $e)
+// 	{
+// 		$translator = $e->getApplication()->getServiceManager()->get('translator');
+// 		$translator->setLocale(\Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']))
+// 			->setFallbackLocale('fr_FR');
+// 	}
 	
 	public function getAutoloaderConfig()
 	{

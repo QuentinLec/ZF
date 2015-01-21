@@ -30,7 +30,7 @@ class AuthController extends AbstractActionController {
 				if ($r->isValid()) {
   				return $this->redirect()->toRoute('album');
  				} else { // Mauvais log/pass
- 					$this->flashMessenger()->addErrorMessage('Erreur d\'identification');
+ 					$this->flashMessenger()->addErrorMessage(translate('Identification error'));
 					return array('formAuth'=>$form);
  				}
 			} else { // Mauvaise saisie
@@ -49,19 +49,19 @@ class AuthController extends AbstractActionController {
 		
 		// LOGIN
 		$login = new Element('login');
-		$login->setLabel("Votre identifiant : ");
+		$login->setLabel(translate('Login')." : ");
 		$login->setAttributes( array(
 				'type' => 'text',
-				'placeholder' => "Votre login"
+				'placeholder' => translate('Login')
 			)
 		);
 		
 		// PASSWORD
 		$password = new Element('password');
-		$password->setLabel("Votre mot de passe : ");
+		$password->setLabel(translate('Password')." : ");
 		$password->setAttributes( array(
 				'type' => 'text',
-				'placeholder' => "Votre password"
+				'placeholder' => translate('Password')
 			)
 		);
 		$password->setAttribute('type', 'Password');

@@ -1,12 +1,30 @@
 <?php
 
- $title = 'Delete album';
+ $title = $this->translate('Delete album');
  $this->headTitle($title);
+ 
+ $request = $this->getHelperPluginManager()->getServiceLocator()->get('request');
+ $router = $this->getHelperPluginManager()->getServiceLocator()->get('router');
+ $matches = $router->match($request);
+ 
+ if(is_null($matches)){
+ 	$route_name = 'album';
+ 	$params = array('lang'=>'en');
+ } else {
+ 	$route_name = $matches->getMatchedRouteName();
+ 	$params = $matches->getParams();
+ }
+ 
+ if(isset($params['lang'])) $lang = $params['lang'];
+ else $lang =  'en';
  ?>
+ 
+ <html lang="<?php echo $lang; ?>">
+ 
  <h1><?php echo $this->escapeHtml($title); ?></h1>
 
  <p>Are you sure that you want to delete
-     '<?php echo $this->escapeHtml($album->title); ?>' by
+     '<?php echo $this->escapeHtml($album->title); ?>' <?php echo $this->translate('by'); ?>
      '<?php echo $this->escapeHtml($album->artist); ?>'?
  </p>
  <?php

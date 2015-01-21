@@ -19,14 +19,14 @@ class AlbumForm extends Form
 				'name' => 'title',
 				'type' => 'Text',
 				'options' => array(
-						'label' => 'Title',
+						'label' => translate("Title"),
 				),
 		));
 		$this->add(array(
 				'name' => 'artist',
 				'type' => 'Text',
 				'options' => array(
-						'label' => 'Artist',
+						'label' => translate("Artist"),
 				),
 		));
 		$this->add(array(
@@ -40,7 +40,7 @@ class AlbumForm extends Form
 				'name' => 'submit',
 				'type' => 'Submit',
 				'attributes' => array(
-						'value' => 'Go',
+						'value' => translate("Go"),
 						'id' => 'submitbutton',
 				),
 		));

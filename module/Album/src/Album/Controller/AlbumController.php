@@ -13,6 +13,17 @@ class AlbumController extends AbstractActionController
 {
 	protected $albumTable;
 	
+	private $translator = null;
+	
+	public function translate($str = '')
+	{
+		if (!$this->translator)
+		{
+			$this->translator = $this->getServiceLocator()->get('translator');
+		}
+		return $this->translator->translate($str);
+	}
+	
 	public function indexAction()
 	{
 		return new ViewModel(array(
@@ -124,7 +135,7 @@ class AlbumController extends AbstractActionController
 	    }
 	
 	    return array(
-	    	'title' => $title,
+	    	'title' => str_replace ( ' ', '_', $title),
 	      'form' => $form,
 	     	);
   }

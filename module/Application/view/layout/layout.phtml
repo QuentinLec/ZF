@@ -1,7 +1,21 @@
-<?php use Zend\Mvc\MvcEvent;
-echo $this->doctype(); ?>
-
-<html lang="en">
+<?php
+	$request = $this->getHelperPluginManager()->getServiceLocator()->get('request');
+	$router = $this->getHelperPluginManager()->getServiceLocator()->get('router');
+	$matches = $router->match($request);
+	
+	if(is_null($matches)){
+	    $route_name = 'album';
+	    $params = array('lang'=>'en');
+	} else {    
+	    $route_name = $matches->getMatchedRouteName();
+	    $params = $matches->getParams();
+	}
+	 
+	if(isset($params['lang'])) $lang = $params['lang'];
+	else $lang =  'en';
+?>
+<?php echo $this->doctype(); ?>
+<html lang="<?php echo $lang; ?>">
     <head>
         <meta charset="utf-8">
         <?php echo $this->headTitle('ZF2 '. $this->translate('Skeleton Application'))->setSeparator(' - ')->setAutoEscape(false) ?>
@@ -40,7 +54,7 @@ echo $this->doctype(); ?>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Home') ?></a></li>
-                        <li class="active"><a href="<?php echo $this->url('album') ?>"><?php echo $this->translate('Album') ?></a></li>
+                        <li class="active"><a href="<?php echo $this->url('album', array('lang'=>$lang)) ?>"><?php echo $this->translate('Album') ?></a></li>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>
@@ -49,7 +63,11 @@ echo $this->doctype(); ?>
             <?php echo $this->content; ?>
             <hr>
             <footer>
-                <p>&copy; Propriete de Quentin LECOURT</p>
+                <p>
+	                &copy; <?php echo $this->translate('All rights reserved.') ?> Quentin LECOURT
+	                <a href="<?php $params['lang'] = 'fr'; echo $this->url($route_name,$params) ?>"><span class="flag flag-fr"><?php echo $this->translate('Fr') ?></span></a>
+	                <a href="<?php $params['lang'] = 'en'; echo $this->url($route_name,$params) ?>"><span class="flag flag-en"><?php echo $this->translate('En') ?></span></a>
+                </p>
             </footer>
         </div> <!-- /container -->
         <?php echo $this->inlineScript() ?>

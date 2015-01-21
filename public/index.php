@@ -10,6 +10,11 @@ if (php_sapi_name() === 'cli-server' && is_file(__DIR__ . parse_url($_SERVER['RE
     return false;
 }
 
+function translate($mot){
+
+	return $mot;
+}
+
 // Setup autoloading
 require 'init_autoloader.php';
 
