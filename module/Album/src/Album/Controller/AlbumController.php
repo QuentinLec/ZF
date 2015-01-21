@@ -185,7 +185,7 @@ class AlbumController extends AbstractActionController
 	    }
 	
 	    return array(
-	      'title'    => $title,
+	      'title'    => str_replace ( ' ', '_', $title),
 	      'album' => $this->getAlbumTable()->getAlbumTitle($title)
 	    );
   }
