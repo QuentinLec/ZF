@@ -1,58 +1,73 @@
 <?php
 
- $title = $this->translate('My Albums');
- $this->headTitle($title);
+	namespace Album;
 
- $request = $this->getHelperPluginManager()->getServiceLocator()->get('request');
- $router = $this->getHelperPluginManager()->getServiceLocator()->get('router');
- $matches = $router->match($request);
- 
- if(is_null($matches)){
- 	$route_name = 'album';
- 	$params = array('lang'=>'en');
- } else {
- 	$route_name = $matches->getMatchedRouteName();
- 	$params = $matches->getParams();
- }
- 
- if(isset($params['lang'])) $lang = $params['lang'];
- else $lang =  'en';
- ?>
- 
- <html lang="<?php echo $lang; ?>">
- 
- <h1><?php echo $this->escapeHtml($title); ?></h1>
- <p>
-     <a href="<?php echo $this->url('album', array('lang'=>$lang, 'action'=>'add'));?>">
-     		<?php echo $this->translate('Add new album') ?>
-     </a>
- </p>
+  $title = $this->translate('My Albums');
+  $this->headTitle($title);
 
- <table class="table">
- <tr>
-     <th><?php echo $this->translate('Title') ?></th>
-     <th><?php echo $this->translate('Artist') ?></th>
-     <th>&nbsp;</th>
- </tr>
- <?php foreach ($albums as $album) : ?>
- <tr>
-     <td>
-     	<a href="<?php echo $this->url('album',
-             array('lang'=>$lang, 'action'=>'infos', 'title' => str_replace ( ' ', '_', $album->title)));?>">
-     		<?php echo $this->escapeHtml($album->title);?>
-     	</a>
-     </td>
-     <td><?php echo $this->escapeHtml($album->artist);?></td>
-     <td>
-         <a href="<?php echo $this->url('album',
-            array('lang'=>$lang, 'action'=>'edit', 'title' => str_replace ( ' ', '_', $album->title)));?>">
-         		<?php echo $this->translate('Edit') ?>
-         </a>
-         <a href="<?php echo $this->url('album',
-            array('lang'=>$lang, 'action'=>'delete', 'title' => str_replace ( ' ', '_', $album->title)));?>">
-         		<?php echo $this->translate('Delete') ?>    
-         </a>
-     </td>
- </tr>
- <?php endforeach; ?>
- </table>
+  $request = $this->getHelperPluginManager()->getServiceLocator()->get('request');
+  $router = $this->getHelperPluginManager()->getServiceLocator()->get('router');
+  $matches = $router->match($request);
+ 
+  if(is_null($matches)){
+ 	 $route_name = 'album';
+ 	 $params = array('lang'=>'en');
+  } else {
+  	$route_name = $matches->getMatchedRouteName();
+ 	 $params = $matches->getParams();
+  }
+ 
+  if(isset($params['lang'])) $lang = $params['lang'];
+  else $lang =  'en';
+?>
+ 
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+	<p>
+  	<a href="<?php echo $this->url('album', array('lang'=>$lang, 'action'=>'add'));?>">
+    	<?php echo $this->translate('Add new album', __NAMESPACE__) ?>
+    </a>
+ 	</p>
+
+ 	<table class="table">
+ 		<tr>
+    	<th><?php echo $this->translate('Title', __NAMESPACE__) ?></th>
+     	<th><?php echo $this->translate('Artist', __NAMESPACE__) ?></th>
+     	<th>&nbsp;</th>
+ 		</tr>
+ 		<?php foreach ($albums as $album) : ?>
+ 		<tr>
+    	<td>
+     		<a href="<?php echo $this->url('album', array(
+     							'lang'=>$lang,
+     							'action'=>'infos',
+     							'title' => str_replace ( ' ', '_', $album->title)
+     		));?>">
+     			<?php echo $this->escapeHtml($album->title);?>
+     		</a>
+     	</td>
+     	<td><?php echo $this->escapeHtml($album->artist);?></td>
+     	<td>
+        <a href="<?php echo $this->url('album', array(
+        					'lang'=>$lang,
+        					'action'=>'edit',
+        					'title' => str_replace ( ' ', '_', $album->title)
+        ));?>">
+        <?php echo $this->translate('Edit', __NAMESPACE__) ?>
+        </a>
+        <a href="<?php echo $this->url('album',
+        	array('lang'=>$lang, 'action'=>'delete', 'title' => str_replace ( ' ', '_', $album->title)));?>">
+         	<?php echo $this->translate('Delete', __NAMESPACE__) ?>    
+        </a>
+     	</td>
+ 		</tr>
+ 		<?php endforeach; ?>
+ 	</table>
+ 
+ 	<?php
+    echo "<br /><h1>DEBUG</h1><br />";
+    echo "Translator-Textdomain: " . $this->formLabel()->getTranslatorTextDomain() . "<br />";
+    echo "Translator-Locale: " . $this->formLabel()->getTranslator()->getLocale() . "<br />";
+    echo "Translator->FallbackLocale: " . $this->formLabel()->getTranslator()->getFallbackLocale() . "<br />";
+    echo "Translate-Test: Password -> ". $this->translate('Password', __NAMESPACE__). "<br />";
+    echo "Contenu de $ _SERVER['HTTP_ACCEPT_LANGUAGE'] : ".$_SERVER['HTTP_ACCEPT_LANGUAGE'];
+	?>

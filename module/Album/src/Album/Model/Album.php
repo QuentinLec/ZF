@@ -20,6 +20,7 @@ class Album implements InputFilterAwareInterface
 		$this->artist = (!empty($data['artist'])) ? $data['artist'] : null;
 		$this->title  = (!empty($data['title'])) ? $data['title'] : null;
 		$this->description  = (!empty($data['description'])) ? $data['description'] : null;
+		$this->fileupload  = (!empty($data['fileupload']))  ? $data['fileupload'] : null;
 	}
 	
 	public function setInputFilter(InputFilterInterface $inputFilter)

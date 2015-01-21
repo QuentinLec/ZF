@@ -15,6 +15,7 @@ use Album\Utility\AclService;
 use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\ModuleEvent;
 use Zend\Mvc\MvcEvent;
+use Zend\Mvc\I18n\Translator;
 
 class Module implements AutoloaderProviderInterface, ConfigProviderInterface {
 
@@ -35,12 +36,13 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface {
 // 		$eventManager->attach(MvcEvent::EVENT_ROUTE);
 // 	}
 
-// 	public function onBootstrap(MvcEvent $e)
-// 	{
-// 		$translator = $e->getApplication()->getServiceManager()->get('translator');
-// 		$translator->setLocale(\Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']))
-// 			->setFallbackLocale('fr_FR');
-// 	}
+public function onBootstrap(MvcEvent $e)
+{
+    $translator = $e->getApplication()->getServiceManager()->get('translator');
+    $translator
+        ->setLocale(\Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']))
+        ->setFallbackLocale('en_US');
+}
 	
 	public function getAutoloaderConfig()
 	{

@@ -11,8 +11,8 @@ use Zend\Authentication\Storage\Session;
 
 class AlbumController extends AbstractActionController
 {
-	protected $albumTable;
 	
+	protected $albumTable;
 	private $translator = null;
 	
 	public function translate($str = '')

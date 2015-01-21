@@ -1,4 +1,5 @@
 <?php
+namespace Album;
 
 return array(
      'service_manager' => array(
@@ -13,6 +14,7 @@ return array(
                 'type'     => 'gettext', // le format utilisé
                 'base_dir' => __DIR__ . '/../language', // le chemin vers le dossier
                 'pattern'  => '%s.mo', // l'extension des fichiers de langues.
+            		'text_domain' => __NAMESPACE__,
             ),
         ),
     ),

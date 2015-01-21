@@ -1,9 +1,9 @@
 <?php
 
- $title = $this->translate('Add Description');
- $this->headTitle($title);
+  $title = $this->translate('Add Description');
+  $this->headTitle($title);
   
- $request = $this->getHelperPluginManager()->getServiceLocator()->get('request');
+  $request = $this->getHelperPluginManager()->getServiceLocator()->get('request');
   $router = $this->getHelperPluginManager()->getServiceLocator()->get('router');
   $matches = $router->match($request);
   
@@ -21,23 +21,20 @@
 
 <html lang="<?php echo $lang; ?>">
 
- <h1><?php echo $this->escapeHtml($title); ?></h1>
+  <h1><?php echo $this->escapeHtml($title); ?></h1>
 
- <?php
- $form = $this->form;
- $form->setAttribute('action', $this->url(
-     'album',
-     array(
+  <?php
+ 		$form = $this->form;
+ 		$form->setAttribute('action', $this->url('album', array(
          'action' => 'description',
          'title'  => $this->title,
-     )
- ));
- $form->prepare();
+    )));
+ 		$form->prepare();
 
- echo $this->form()->openTag($form);
- echo $this->formHidden($form->get('id'));
- echo $this->formHidden($form->get('title'));
- echo $this->formHidden($form->get('artist'));
- echo $this->formRow($form->get('description'))." ";
- echo $this->formSubmit($form->get('submit'));
- echo $this->form()->closeTag();
+ 		echo $this->form()->openTag($form);
+		echo $this->formHidden($form->get('id'));
+	echo $this->formHidden($form->get('title'));
+	echo $this->formHidden($form->get('artist'));
+	echo $this->formRow($form->get('description'))." ";
+	echo $this->formSubmit($form->get('submit'));
+	echo $this->form()->closeTag();

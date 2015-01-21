@@ -1,5 +1,4 @@
 <?php
-
 	$title = $this->escapeHtml($album->title)." ".$this->translate('by')." ".$this->escapeHtml($album->artist);
   $this->headTitle($title);
   
@@ -21,19 +20,39 @@
 
 <html lang="<?php echo $lang; ?>">
 
-<h1><i><?php echo $this->escapeHtml($album->title); ?></i> <?php echo $this->translate('by'); ?> <i><?php echo $this->escapeHtml($album->artist); ?></i></h1>
-<br>
-<h3><?php echo $this->translate('Description'); ?> :</h3>
-<?php echo $this->escapeHtml($album->description); ?>
-<br><br>
-<a href="<?php echo $this->url('album', array('lang'=>$lang, 'action'=>'description', 'title' => str_replace (' ', '_', $album->title)));?>">
-	<?php echo $this->translate('Add/Modify'); ?>
-</a>
-<br>
-<h3><?php echo $this->translate('Images'); ?> :</h3>
-<form method="post" enctype="multipart/form-data" action="upload.php">
-<p>
-<input type="file" name="fichier" size="30">
-<input type="submit" name="upload" value="Uploader">
-</p>
-</form>
+	<h1>
+		<i><?php echo $this->escapeHtml($album->title); ?></i>
+		<?php echo $this->translate('by'); ?> 
+		<i><?php echo $this->escapeHtml($album->artist); ?></i>
+	</h1>
+	
+	<br>
+	
+	<h3><?php echo $this->translate('Description'); ?> :</h3>
+	<?php echo $this->escapeHtml($album->description); ?>
+
+	<br><br>
+
+	<a href="<?php echo $this->url('album', array(
+						'lang'=>$lang,
+						'action'=>'description',
+						'title' => str_replace (' ', '_', $album->title)
+	));?>">
+		
+		<?php echo $this->translate('Add/Modify'); ?>
+	</a>
+	
+	<br>
+
+	<h3><?php echo $this->translate('Images'); ?> :</h3>
+
+	<img src="<?php echo $this->baseUrl; ?>/img/gaston.png" />
+
+	<br><br>
+
+	<form method="post" enctype="multipart/form-data" action="upload.php">
+		<p>
+			<input type="file" name="fichier" size="30">
+			<input type="submit" name="upload" value="Uploader">
+		</p>
+	</form>
